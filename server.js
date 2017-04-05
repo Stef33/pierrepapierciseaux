@@ -37,7 +37,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
-server.listen(process.env.PORT, function() {
+server.listen(process.env.PORT || 3000, function() {
     console.log('Server listening on port 3000 !');
 });
 
