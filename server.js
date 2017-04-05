@@ -366,7 +366,8 @@ io.sockets.on('connection', function(socket) {
     socket.on('disconnect', function(data){
         // Enlève le joueur de la liste des joueurs et relance le jeu.
         if(!socket.username) return;
-        users.splice(users.indexOf(socket.username), 1);
+        socket.auth = false;
+        delete users[socket.username];
         updateUsernames();
         console.log('[socket.io] %s has disconnected.', socket.username);
         choices = [];

@@ -14,7 +14,18 @@ $(function(){
     var $signupError        = $('#signupError');
     var $password           = $('#password');
     var $userscores         = $('#userscores');
+    var $logout             = $('#logout');
     var submited            = false;
+
+    $( window ).on('onunload',function() {
+        socket.disconnect();
+    });
+
+    $logout.click(function() {
+        socket.disconnect();
+        $userFormArea.show();
+        $messageArea.hide();
+    })
 
     // Vérification authentification du joueur.
     socket.on('login', function(user, token) {
