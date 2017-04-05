@@ -89,7 +89,7 @@ app.get('*', function(req, res) {
 
 // Lancé quand le joueur se connecte
 io.sockets.on('connection', function(socket) {
-
+    socket.auth = false;
     // Trouver tout les joueurs inscrits.
     User.find({}, function(err, docs) {
         if(err) {
@@ -100,7 +100,6 @@ io.sockets.on('connection', function(socket) {
     });
 
     var user_added = false;
-    var isAuthenticate = false;
 
     var updateUsernames = function() {
         io.sockets.emit('liste des joueurs', Object.keys(users));
@@ -111,6 +110,7 @@ io.sockets.on('connection', function(socket) {
         var token = user.token;
         var decoded = jwt.decode(token, JWT_SECRET);
         if(decoded == user.username) {
+            socket.auth = true;
             console.log('Connection is authenticated !');
             if (user.username in users) {
                 callback(false);
@@ -122,7 +122,6 @@ io.sockets.on('connection', function(socket) {
                 callback(true);
                 socket.username = user.username;
                 users[user.username] = socket;
-                user_added = true;
                 isAuthenticate = true;
                 updateUsernames();
                 console.log('[socket.io] %s has connected.', socket.username);
@@ -370,5 +369,13 @@ io.sockets.on('connection', function(socket) {
         console.log('[socket.io] %s has disconnected.', socket.username);
         choices = [];
     });
+
+    // Si la connexion n'est pas authentifiée, on déconnecte la socket.
+    setTimeout(function() {
+        if(!socket.auth) {
+            console.log('Disconnecting the socket %s');
+            socket.disconnect();
+        }
+    }, 5000);
 
 });
