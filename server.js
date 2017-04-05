@@ -20,7 +20,7 @@ var choices             = [];
 
 var db                  = null;
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost:27017/rockpaperscissors', function(err, dbconn) {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/rockpaperscissors', function(err, dbconn) {
     if(!err) {
         console.log("We are connected to the database !");
     } else {
@@ -37,7 +37,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
-server.listen(process.env.PORT || 3000, function() {
+server.listen(process.env.PORT, function() {
     console.log('Server listening on port 3000 !');
 });
 
