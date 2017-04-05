@@ -1,0 +1,79 @@
+#messageArea{
+    display: none;
+}
+
+#userError {
+    color: red;
+    font-weight: bold;
+}
+
+#signupError {
+    color: red;
+    font-weight: bold;
+}
+
+#bestScores {
+    position: absolute;
+    width: 310px;
+    left: 170px;
+    top: 500px;
+}
+
+.error{
+    color: red;
+}
+
+.whisper{
+    color: gray;
+    font-style: italic;
+}
+
+.info {
+    color: blue;
+    font-style: oblique;
+}
+
+.result {
+    color: green;
+    font-style: oblique;
+}
+
+.page-title {
+    margin: auto;
+    vertical-align: middle;
+    line-height: 200px;
+    font-family: 'Arial';
+    font-size: 40px;
+    background-color: rgba(75, 75, 75, 0.2);
+}
+
+.page-title a {
+    color: #FFFFFF;
+}
+
+.title-box {
+    background-image: url('../img/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 200px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#userForm {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+}
+
+#messageArea {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+}
+
+.user-icon {
+    font-size: 20px;
+}

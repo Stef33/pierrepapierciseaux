@@ -1,0 +1,55 @@
+extends layout
+
+block content
+    .container
+        #userFormArea.row
+            .col-md-12
+                form#userForm(method='post', action='/')
+                    .form-group
+                        #login
+                            h2 Login
+                            p#userError
+                            label Identifiant
+                            input#username.form-control(type='text', size='30', autocomplete='off', placeholder='pseudonyme', name='username')
+                            br
+                            label Mot de passe
+                            input#password.form-control(type='password',size='30', autocomplete='off', placeholder='mot de passe', name='password')
+                            br
+                            button.btn.btn-primary.btn-lg(type='submit') Se connecter
+                            br
+                            a#toSignup(href='/signup') Pas encore membre ? Inscrivez-vous.
+
+        #messageArea.row
+            #inLinePlayers.col-md-4
+                .well
+                    h3 Joueurs en ligne
+                    ul#users.list-group
+            #bestScores.col-md-4
+                .well
+                    h3 Meilleurs scores
+                    ul#userscores.list-group
+            .col-md-8
+                #chat.chat
+                #game
+                    .form-group
+                        label(for='rock').radio-inline
+                        input#rock(type='radio', value='pierre', name='choice')
+                        | Pierre
+                        br
+                        label(for='paper').radio-inline
+                        input#paper(type='radio', value='papier', name='choice')
+                        | Papier
+                        br
+                        label(for='scissors').radio-inline
+                        input#scissors(type='radio', value='ciseaux', name='choice')
+                        | Ciseaux
+                        br
+                        button.game.btn.btn-primary Choix
+                        br
+                        br
+                form#messageForm
+                    .form-group
+                        label Ecrivez un message à votre adversaire
+                        textarea#message.form-control
+                        br
+                        input.btn.btn-primary.btn-lg(type='submit', value='Envoyer')

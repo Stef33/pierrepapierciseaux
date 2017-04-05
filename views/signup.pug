@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    .container
+        #userRegistrationFormArea.row
+            .col-md-12
+                form#registrationForm(method='post', action='/signup')
+                    .form-group
+                        #signup
+                            h2 Inscription
+                            p#signupError
+                            label Identifiant
+                            input#username.form-control(type='text', size='30', autocomplete='off', name='username', placeholder='pseudonyme')
+                            br
+                            label Mot de passe
+                            input#password.form-control(type='password', size='30', autocomplete='off', name='password',
+                            placeholder='mot de passe')
+                            br
+                            button#subscribe.btn.btn-primary.btn-lg(type='submit') S'inscrire
+                            br
+                            a#toLogin(href='/') Déjà membre ? Connectez-vous.

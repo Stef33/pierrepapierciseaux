@@ -1,0 +1,19 @@
+doctype html
+html(lang='fr')
+    head
+        // Page de base
+        meta(charset='utf-8')
+        title Rock ! Paper ! Scissors !
+        meta(name='description', content='Rock, paper, scissors game in full stack JS')
+        meta(name='author', content='Stéphane Levrai')
+        link(rel='stylesheet', href='css/bootstrap/css/bootstrap.css')
+        link(rel='stylesheet', href='css/style.css')
+        script(type='text/javascript', src='/socket.io/socket.io.js')
+        script(type='text/javascript', src='js/jquery.js')
+        script(type='text/javascript', src='js/client.js')
+        script(type='text/javascript')
+    body
+        .title-box
+            h1.page-title
+                a(href='/') Pierre Papier Ciseaux
+        block content
