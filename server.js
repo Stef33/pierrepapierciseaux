@@ -376,6 +376,6 @@ io.sockets.on('connection', function(socket) {
             console.log('Disconnecting the socket %s');
             socket.disconnect();
         }
-    }, 5000);
+    }, 1000);
 
 });
