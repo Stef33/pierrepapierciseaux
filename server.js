@@ -373,10 +373,10 @@ io.sockets.on('connection', function(socket) {
     });
 
     // On déconnecte la socket si la connexion n'est pas authentifiée.
-    setTimeout(function() {
+    /*setTimeout(function() {
         if(!socket.auth) {
             socket.disconnect();
         }
-    }, 1000);
+    }, 1000);*/
 
 });
