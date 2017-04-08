@@ -27,6 +27,10 @@ $(function(){
         $messageArea.hide();
     })
 
+    socket.on('event', function() {
+        console.log('We are live');
+    });
+
     // Vérification authentification du joueur.
     socket.on('login', function(user, token) {
         var token = user.token;

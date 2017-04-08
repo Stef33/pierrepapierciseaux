@@ -2,7 +2,7 @@ var http                = require('http');
 var express             = require('express');
 var app                 = express();
 var server              = require('http').createServer(app);
-var io                  = require('socket.io')(server);
+var io                  = require('socket.io')(server, { transports: ['polling', 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']});
 var path                = require('path');
 var morgan              = require('morgan');
 var bodyParser          = require('body-parser');
@@ -37,8 +37,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
-server.listen(process.env.PORT || 3000, function() {
-    console.log('Server listening on port 3000 !');
+server.listen(process.env.PORT || 8888, function() {
+    console.log('Server listening on port 8888 !');
 });
 
 app.get('/', function(req, res) {
@@ -51,6 +51,7 @@ app.post('/', function(req, res, next) {
             if (result) {
                 var token = jwt.encode(user.username, JWT_SECRET);
                 io.sockets.emit('login', { username: user.username, token: token });
+                next();
             } else {
                 return res.status(400).send('Mot de passe érroné !');
             }
@@ -81,10 +82,6 @@ app.post('/signup', function(req,res,next) {
             });
         });
     });
-});
-
-app.get('*', function(req, res) {
-  res.redirect('/');
 });
 
 // Lancé quand le joueur se connecte
@@ -326,7 +323,7 @@ io.sockets.on('connection', function(socket) {
                     var username1 = choices[1].joueur;
                     if (scoreUser1 > bestscore1) {
                         bestscore1 = scoreUser1;
-                        saveBestScore(username1, bestscore1, scoreUser1);
+                        saveScore(username1, bestscore1, scoreUser1);
                     } else {
                         var bestscore1 = isNaN(choices[1].meilleurScore);
                         bestscore1 = bestscore1 + 1;
