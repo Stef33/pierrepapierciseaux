@@ -32,21 +32,20 @@ $(function(){
     });
 
     // Vérification authentification du joueur.
-    socket.on('login', function(user, token) {
-        var token = user.token;
-        if( $username.val() == user.username ) {
-            var user = { username : $username.val(), token : token };
-            socket.emit('nouveau joueur', user, function(data) {
-                if(data) {
-                    $userFormArea.hide();
-                    $messageArea.show();
-                } else {
-                    $userError.html('Pseudonyme non valide ou déjà utilisé. Merci d\'en choisir un autre.');
-                }
-            });
-            $username.val('');
-            $password.val('');
-        }
+    $userForm.submit(function(e) {
+        e.preventDefault();
+        var user = { username : $username.val(), password : $password.val() };
+        socket.emit('nouveau joueur', user, function(data) {
+            console.log(data);
+            if(data) {
+                $userFormArea.hide();
+                $messageArea.show();
+            } else {
+                $userError.html('Ce pseudonyme est déjà utilisé. Merci d\'en choisir un autre.');
+            }
+        });
+        $username.val('');
+        $password.val('');
     });
 
     // Affichage message d'erreur en cas d'un pseudo déjàutilisé.

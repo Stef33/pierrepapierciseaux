@@ -2,7 +2,7 @@ var http                = require('http');
 var express             = require('express');
 var app                 = express();
 var server              = require('http').createServer(app);
-var io                  = require('socket.io')(server, { transports: [ 'polling', 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling' ]});
+var io                  = require('socket.io')(server, { transports: ['polling', 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']});
 var path                = require('path');
 var morgan              = require('morgan');
 var bodyParser          = require('body-parser');
@@ -45,19 +45,19 @@ app.get('/', function(req, res) {
     res.render('index');
 });
 
-app.post('/', function(req, res, next) {
+/*app.post('/', function(req, res, next) {
     User.findOne({username: req.body.username}, function(err, user) {
         bcrypt.compare(req.body.password, user.password, function(err, result) {
             if (result) {
                 var token = jwt.encode(user.username, JWT_SECRET);
                 io.sockets.emit('login', { username: user.username, token: token });
-                next();
+                res.redirect('/game');
             } else {
                 return res.status(400).send('Mot de passe érroné !');
             }
         });
     });
-});
+});*/
 
 app.get('/signup', function(req, res) {
     res.render('signup');
@@ -89,6 +89,8 @@ io.sockets.on('connection', function(socket) {
 
     socket.auth = false;
 
+
+
     // Trouver tout les joueurs inscrits.
     User.find({}, function(err, docs) {
         if(err) {
@@ -105,35 +107,31 @@ io.sockets.on('connection', function(socket) {
     };
 
     // Nouveau joueur
-    socket.on('nouveau joueur', function(user, callback) {
-        var token = user.token;
-        var decoded = jwt.decode(token, JWT_SECRET);
-        if(decoded == user.username) {
-            socket.auth = true;
+    socket.on('nouveau joueur', function(data, callback) {
+        User.findOne({username: data.username}, function(err, user) {
+            bcrypt.compare(data.password, user.password, function(err, result) {
+                if (result) {
+                    if (user.username in users) {
+                        callback(false);
+                        console.log('User exist in Users');
+                    } else if (user.username == ''){
+                        callback(false);
+                        console.log('Username empty');
+                    } else {
+                        callback(true);
+                        socket.username = user.username;
+                        users[user.username] = socket;
+                        user_added = true;
+                        updateUsernames();
+                        console.log('[socket.io] %s has connected.', socket.username);
 
-            console.log('Connection is authenticated !');
-            if (user.username in users) {
-                callback(false);
-                console.log('User exist in Users');
-            } else if (user.username == ''){
-                callback(false);
-                console.log('Username empty');
-            } else {
-                callback(true);
-                socket.username = user.username;
-                users[user.username] = socket;
-                user_added = true;
-                isAuthenticate = true;
-                updateUsernames();
-                console.log('[socket.io] %s has connected.', socket.username);
-
-                if (Object.keys(users).length == 2) {
-                    io.sockets.emit('debut de partie');
+                        if (Object.keys(users).length == 2) {
+                            io.sockets.emit('debut de partie');
+                        }
+                    }
                 }
-            }
-        } else {
-            console.log('Not working !');
-        }
+            });
+        });
     });
 
     // Sauvegarde des scores.
